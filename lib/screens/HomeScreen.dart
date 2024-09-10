@@ -239,59 +239,59 @@ class _HomeScreenState extends State<HomeScreen> {
                   Expanded(
                     child: _isSearching
                         ? Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: TextField(
-                              controller: _searchController,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'City name ...',
-                              ),
-                              autofocus: true,
-                              onChanged: (val) {},
-                            ),
-                          )
+                      padding: EdgeInsets.only(left: 10),
+                      child: TextField(
+                        controller: _searchController,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'City name ...',
+                        ),
+                        autofocus: true,
+                        onChanged: (val) {},
+                      ),
+                    )
                         : Text(
-                            '${weather.name}',
-                            style: TextStyle(fontSize: mq.height * 0.03),
-                          ),
+                      '${weather.name}',
+                      style: TextStyle(fontSize: mq.height * 0.03),
+                    ),
                   ),
 
                   //---------------------------------------Start seach Icon--------------------//
                   _isSearching
                       ? Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: IconButton(
-                            onPressed: () async {
-                              if (_searchController.text.isEmpty) {
-                                APIs.showSnackbar(
-                                    context, "City name cannot be empty");
-                              } else {
-                                //------------------------------Write the last seach to local storage and Fetcch Api---------------------------//
-                                try {
-                                  final weather =
-                                      await APIs.fetch(_searchController.text);
-                                  log("write :-> ${_searchController.text.toString()}");
-                                  await storage.write(
-                                      key: "last",
-                                      value: _searchController.text.toString());
-                                  setState(() {
-                                    lastsearch = _searchController.text;
-                                    _weatherData = Future.value(weather);
-                                    _isSearching = false;
-                                  });
-                                } catch (e) {
-                                  _searchController.clear();
-                                  setState(() {
-                                    _isSearching = !_isSearching;
-                                    APIs.showSnackbar(
-                                        context, "City Not Found");
-                                  });
-                                }
-                              }
-                            },
-                            icon: Icon(Icons.logout),
-                          ),
-                        )
+                    padding: const EdgeInsets.only(right: 10),
+                    child: IconButton(
+                      onPressed: () async {
+                        if (_searchController.text.isEmpty) {
+                          APIs.showSnackbar(
+                              context, "City name cannot be empty");
+                        } else {
+                          //------------------------------Write the last seach to local storage and Fetcch Api---------------------------//
+                          try {
+                            final weather =
+                            await APIs.fetch(_searchController.text);
+                            log("write :-> ${_searchController.text.toString()}");
+                            await storage.write(
+                                key: "last",
+                                value: _searchController.text.toString());
+                            setState(() {
+                              lastsearch = _searchController.text;
+                              _weatherData = Future.value(weather);
+                              _isSearching = false;
+                            });
+                          } catch (e) {
+                            _searchController.clear();
+                            setState(() {
+                              _isSearching = !_isSearching;
+                              APIs.showSnackbar(
+                                  context, "City Not Found");
+                            });
+                          }
+                        }
+                      },
+                      icon: Icon(Icons.logout),
+                    ),
+                  )
                       : Container()
                 ],
               ),
@@ -302,62 +302,62 @@ class _HomeScreenState extends State<HomeScreen> {
         //-------------------------LAST SEARCHED City Container------------------------------//
         _isSearching && last != ""
             ? ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 10,
+          borderRadius: BorderRadius.circular(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "Recents : ",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: mq.height * .02),
+              ),
+              Row(
+                children: [
+                  Container(
+                      color: Colors.white,
+                      width: mq.width * 0.05,
+                      height: mq.height * 0.05,
+                      child: Icon(Icons.brightness_1,
+                          size: 8, color: Colors.black)),
+                  Container(
+                    height: mq.height * 0.05,
+                    width: mq.width * 0.70,
+                    color: Colors.white,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "$last",
+                            style: TextStyle(fontSize: 20),
+                          )),
                     ),
-                    Text(
-                      "Recents : ",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: mq.height * .02),
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                            color: Colors.white,
-                            width: mq.width * 0.05,
-                            height: mq.height * 0.05,
-                            child: Icon(Icons.brightness_1,
-                                size: 8, color: Colors.black)),
-                        Container(
-                          height: mq.height * 0.05,
-                          width: mq.width * 0.70,
-                          color: Colors.white,
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "$last",
-                                  style: TextStyle(fontSize: 20),
-                                )),
-                          ),
-                        ),
+                  ),
 
-                        //-------------------------Delete the last searched city-------------------------------//
-                        Container(
-                          height: mq.height * 0.05,
-                          width: mq.width * 0.15,
-                          color: Colors.white,
-                          child: IconButton(
-                              onPressed: () async {
-                                await storage.delete(key: "last");
-                                setState(() {
-                                  last = "";
-                                });
-                              },
-                              icon: Icon(Icons.delete)),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              )
+                  //-------------------------Delete the last searched city-------------------------------//
+                  Container(
+                    height: mq.height * 0.05,
+                    width: mq.width * 0.15,
+                    color: Colors.white,
+                    child: IconButton(
+                        onPressed: () async {
+                          await storage.delete(key: "last");
+                          setState(() {
+                            last = "";
+                          });
+                        },
+                        icon: Icon(Icons.delete)),
+                  )
+                ],
+              ),
+            ],
+          ),
+        )
             : Container()
       ],
     );
@@ -445,8 +445,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     )
-                    //-
-                    ),
+                  //-
+                ),
 
                 //------------Min and Max temperature----------------------//
 
@@ -481,8 +481,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                         )
-                        //-
-                        ),
+                      //-
+                    ),
 
                     //-----------max temp----------//
                     Padding(
@@ -513,8 +513,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                         )
-                        //-
-                        ),
+                      //-
+                    ),
                   ],
                 ),
               ],
@@ -795,5 +795,5 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-  //---------------------------------------------------------------------------------------------------------//
+//---------------------------------------------------------------------------------------------------------//
 }

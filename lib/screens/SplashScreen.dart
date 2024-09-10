@@ -51,8 +51,8 @@ class _SplashScreenState extends State<SplashScreen> {
       child: Scaffold(
         body:
 
-            //--------------------------------------Background image-----------------------------//
-            Container(
+        //--------------------------------------Background image-----------------------------//
+        Container(
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage("assets/w_back.jpg"),

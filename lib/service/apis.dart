@@ -24,7 +24,7 @@ class APIs {
     log(response.body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data =
-          Wea.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+      Wea.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
       // log("Success : ${response.body}");
       return data;
     } else {
@@ -77,5 +77,5 @@ class APIs {
         backgroundColor: Colors.red.withOpacity(.8),
         behavior: SnackBarBehavior.floating));
   }
-  //-------------------------------------------------------------------------------------------------//
+//-------------------------------------------------------------------------------------------------//
 }
