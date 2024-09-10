@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:geek_travel/screens/HomeScreen.dart';
+import 'package:geek_travel/screens/MainTravelScreen.dart';
 import 'package:geek_travel/screens/SplashScreen.dart';
 
 void main() {
@@ -22,7 +24,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(brightness: Brightness.light),
-      home: SplashScreen(),
+      home: Maintravelscreen(),
     );
   }
 }
