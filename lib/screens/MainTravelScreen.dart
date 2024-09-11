@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:geek_travel/screens/MakeTrip.dart';
 import 'package:geek_travel/screens/travelList.dart';
-
+import 'package:geek_travel/service/apis.dart';
 import '../components/Custom_navDrawer.dart';
 
 class Maintravelscreen extends StatefulWidget {
@@ -79,6 +80,7 @@ class _MaintravelscreenState extends State<Maintravelscreen> {
         body: SingleChildScrollView(
           child: Column(
             children: [
+              SizedBox(height: 300,),
               // FutureBuilder<TvSeriesModel>(
               //   future: topRatedShows,
               //   builder: (context, snapshot) {
@@ -88,6 +90,29 @@ class _MaintravelscreenState extends State<Maintravelscreen> {
               //     return const SizedBox();
               //   },
               // ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: ElevatedButton(
+                  onPressed: ()async{
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>Maketrip()));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 45), // Set width to double.infinity and height to 30
+                    backgroundColor: Colors.blue, // Set background color to blue
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10), // Corner radius of 10
+                    ),
+                  ),
+                  child: const Text(
+                    "Make Your Own Trip",
+                    style: TextStyle(
+                      color: Colors.white, // Text color white
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold// Font size 20
+                    ),
+                  ),
+                ),
+              ),
               SizedBox(
                 height: 220,
                 // child: MovieCardWidget(

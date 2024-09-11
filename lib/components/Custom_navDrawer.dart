@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:geek_travel/screens/HomeScreen.dart';
+import 'package:geek_travel/screens/MyTripPage.dart';
 import 'package:geek_travel/screens/SplashScreen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -74,7 +75,9 @@ class _CustomNavDrawerState extends State<CustomNavDrawer> {
             // Navigator.push(context, MaterialPageRoute(builder: (_)=>SemViseSubjects()));
           }),
           _list(Icons.notifications_active, "Flights", () {}),
-          _list(Icons.location_on_outlined, "My Trips", () {}),
+          _list(Icons.location_on_outlined, "My Trips", () {
+            Navigator.push(context, MaterialPageRoute(builder: (_)=>Mytrippage()));
+          }),
           _list(Icons.person, "Profile", () {
             // Navigator.push(context, MaterialPageRoute(builder: (_) => ProfilePage()));
           }),

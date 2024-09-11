@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 import '../Models/FlightModel.dart';
+import '../Models/GeoIdModel.dart';
+import '../Models/HotelModel.dart';
 import '../Models/WeatherModel.dart';
 
 class APIs {
@@ -15,6 +17,8 @@ class APIs {
   //-----------------------------------Constants(base url and apikey)-----------------------------------------------//
   static final String baseUrl = "https://api.openweathermap.org/data/2.5/";
   static final String apiKey = "cd2e34eee5dbf80c8197c24f3701fd7a";
+  static String hotelname = "";
+  static String hotelprice = "";
   //--------------------------------------------------------------------------------------------//
 
   //----------------------------------fetch the api--------------------------------------------//
@@ -72,33 +76,100 @@ class APIs {
 
   //--------------------------------------------Weather API OVER--------------------------------------------------------------------//
 
+  //--------------------------------------------Hotel API START--------------------------------------------------------------------//
 
-  Future<FlightModelDart?> fetchFlights(String src , String des , ) async {
-    final url = Uri.parse('https://tripadvisor16.p.rapidapi.com/api/v1/flights/searchFlights?sourceAirportCode=BOM&destinationAirportCode=DEL&itineraryType=ONE_WAY&sortOrder=ML_BEST_VALUE&numAdults=1&numSeniors=0&classOfService=ECONOMY&pageNumber=1&nearby=yes&nonstop=yes&currencyCode=USD&region=USA');
-
+  static Future<int?> fetchHotel(String city) async {
+    int? geo = -1;
+    final url = Uri.parse('https://tripadvisor16.p.rapidapi.com/api/v1/hotels/searchLocation?query=$city');
     try {
       final response = await http.get(
         url,
         headers: {
-          'x-rapidapi-key': '51bb281ac6msh115521ff50f3357p1d5628jsn7a804446840d',
+          'x-rapidapi-key': 'c6e6db67fcmsh7a4951fb8ab2067p1b58b6jsn310032510f33',
           'x-rapidapi-host': 'tripadvisor16.p.rapidapi.com',
         },
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200){
         // Convert the JSON response into a FlightModelDart object
         final Map<String, dynamic> jsonData = json.decode(response.body);
-        FlightModelDart flightData = FlightModelDart.fromJson(jsonData);
-        return flightData;
+        GeoIdModelDart geoData = GeoIdModelDart.fromJson(jsonData);
+        geo = geoData.data?[0].geoId;
+        log("mera yashu yashu: ${geo}");
+        return geo;
+
       } else {
         print('Request failed with status: ${response.statusCode}.');
-        return null;
+        return -1;
       }
-    } catch (e) {
+    }catch (e){
       print('Error occurred: $e');
-      return null;
+      return -1;
     }
   }
+
+  static Future<Example?> fetchHotelFinal(String city , String checkin , String checkout)async{
+    // 2024-09-10
+    int? geo = (await APIs.fetchHotel(city));
+
+    if(geo != -1){
+      final url = Uri.parse(
+          "https://tripadvisor16.p.rapidapi.com/api/v1/hotels/searchHotels?geoId=$geo&checkIn=$checkin&checkOut=$checkout&pageNumber=1&currencyCode=USD");
+
+      try {
+        final response = await http.get(
+          url,
+          headers: {
+            'x-rapidapi-key': 'c6e6db67fcmsh7a4951fb8ab2067p1b58b6jsn310032510f33',
+            'x-rapidapi-host': 'tripadvisor16.p.rapidapi.com',
+          },
+        );
+        log(response.body);
+        if (response.statusCode == 200){
+          log("hello bro****************************************************************************");
+          // Convert the JSON response into a FlightModelDart object
+          final Map<String, dynamic> jsonData = json.decode(response.body);
+          log("hello lilbro****************************************************************************");
+          Example geoData = Example.fromJson(jsonData);
+          log("hello lilbrrrrro****************************************************************************");
+          return geoData;
+        } else {
+          print('Request failed with status: ${response.statusCode}.');
+          return null;
+        }
+      } catch (e) {
+        print('Error occurred: $e');
+        return null;
+      }
+    }
+  }
+
+
+  // final url = Uri.parse('https://tripadvisor16.p.rapidapi.com/api/v1/flights/searchFlights?sourceAirportCode=BOM&destinationAirportCode=DEL&itineraryType=ONE_WAY&sortOrder=ML_BEST_VALUE&numAdults=1&numSeniors=0&classOfService=ECONOMY&pageNumber=1&nearby=yes&nonstop=yes&currencyCode=USD&region=USA');
+  //
+  // try {
+  //   final response = await http.get(
+  //     url,
+  //     headers: {
+  //       'x-rapidapi-key': '51bb281ac6msh115521ff50f3357p1d5628jsn7a804446840d',
+  //       'x-rapidapi-host': 'tripadvisor16.p.rapidapi.com',
+  //     },
+  //   );
+  //
+  //   if (response.statusCode == 200) {
+  //     // Convert the JSON response into a FlightModelDart object
+  //     final Map<String, dynamic> jsonData = json.decode(response.body);
+  //     Example HotelData = Example.fromJson(jsonData);
+  //     return HotelData;
+  //   } else {
+  //     print('Request failed with status: ${response.statusCode}.');
+  //     return null;
+  //   }
+  // } catch (e) {
+  //   print('Error occurred: $e');
+  //   return null;
+  // }
+
 
   //-----------------------------------Snackbar-----------------------------------------------------//
   static void showSnackbar(BuildContext context, String msg) {

@@ -1,13 +1,19 @@
-class HotelModel {
+class Example {
   bool? status;
   String? message;
   int? timestamp;
   Data? data;
 
-  HotelModel({this.status, this.message, this.timestamp, this.data});
+  Example({this.status, this.message, this.timestamp, this.data});
 
-  HotelModel.fromJson(Map<String, dynamic> json) {
-    status = json["status"];
+  Example.fromJson(Map<String, dynamic> json) {
+    // Handle type conversion for status
+    var statusValue = json["status"];
+    if (statusValue is String) {
+      status = statusValue.toLowerCase() == 'true';
+    } else if (statusValue is bool) {
+      status = statusValue;
+    }
     message = json["message"];
     timestamp = json["timestamp"];
     data = json["data"] == null ? null : Data.fromJson(json["data"]);
@@ -18,7 +24,7 @@ class HotelModel {
     _data["status"] = status;
     _data["message"] = message;
     _data["timestamp"] = timestamp;
-    if(data != null) {
+    if (data != null) {
       _data["data"] = data?.toJson();
     }
     return _data;
@@ -39,7 +45,7 @@ class Data {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> _data = <String, dynamic>{};
     _data["sortDisclaimer"] = sortDisclaimer;
-    if(data != null) {
+    if (data != null) {
       _data["data"] = data?.map((e) => e.toJson()).toList();
     }
     return _data;
@@ -49,7 +55,7 @@ class Data {
 class Data1 {
   String? id;
   String? title;
-  dynamic primaryInfo;
+  String? primaryInfo;
   String? secondaryInfo;
   Badge? badge;
   BubbleRating? bubbleRating;
@@ -62,7 +68,22 @@ class Data1 {
   dynamic priceSummary;
   List<CardPhotos>? cardPhotos;
 
-  Data1({this.id, this.title, this.primaryInfo, this.secondaryInfo, this.badge, this.bubbleRating, this.isSponsored, this.accentedLabel, this.provider, this.priceForDisplay, this.strikethroughPrice, this.priceDetails, this.priceSummary, this.cardPhotos});
+  Data1({
+    this.id,
+    this.title,
+    this.primaryInfo,
+    this.secondaryInfo,
+    this.badge,
+    this.bubbleRating,
+    this.isSponsored,
+    this.accentedLabel,
+    this.provider,
+    this.priceForDisplay,
+    this.strikethroughPrice,
+    this.priceDetails,
+    this.priceSummary,
+    this.cardPhotos,
+  });
 
   Data1.fromJson(Map<String, dynamic> json) {
     id = json["id"];
@@ -71,8 +92,21 @@ class Data1 {
     secondaryInfo = json["secondaryInfo"];
     badge = json["badge"] == null ? null : Badge.fromJson(json["badge"]);
     bubbleRating = json["bubbleRating"] == null ? null : BubbleRating.fromJson(json["bubbleRating"]);
-    isSponsored = json["isSponsored"];
-    accentedLabel = json["accentedLabel"];
+
+    var isSponsoredValue = json["isSponsored"];
+    if (isSponsoredValue is String) {
+      isSponsored = isSponsoredValue.toLowerCase() == 'true';
+    } else if (isSponsoredValue is bool) {
+      isSponsored = isSponsoredValue;
+    }
+
+    var accentedLabelValue = json["accentedLabel"];
+    if (accentedLabelValue is String) {
+      accentedLabel = accentedLabelValue.toLowerCase() == 'true';
+    } else if (accentedLabelValue is bool) {
+      accentedLabel = accentedLabelValue;
+    }
+
     provider = json["provider"];
     priceForDisplay = json["priceForDisplay"];
     strikethroughPrice = json["strikethroughPrice"];
@@ -87,10 +121,10 @@ class Data1 {
     _data["title"] = title;
     _data["primaryInfo"] = primaryInfo;
     _data["secondaryInfo"] = secondaryInfo;
-    if(badge != null) {
+    if (badge != null) {
       _data["badge"] = badge?.toJson();
     }
-    if(bubbleRating != null) {
+    if (bubbleRating != null) {
       _data["bubbleRating"] = bubbleRating?.toJson();
     }
     _data["isSponsored"] = isSponsored;
@@ -100,7 +134,7 @@ class Data1 {
     _data["strikethroughPrice"] = strikethroughPrice;
     _data["priceDetails"] = priceDetails;
     _data["priceSummary"] = priceSummary;
-    if(cardPhotos != null) {
+    if (cardPhotos != null) {
       _data["cardPhotos"] = cardPhotos?.map((e) => e.toJson()).toList();
     }
     return _data;
@@ -121,7 +155,7 @@ class CardPhotos {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> _data = <String, dynamic>{};
     _data["__typename"] = typename;
-    if(sizes != null) {
+    if (sizes != null) {
       _data["sizes"] = sizes?.toJson();
     }
     return _data;
@@ -155,13 +189,19 @@ class Sizes {
 
 class BubbleRating {
   String? count;
-  int? rating;
+  double? rating;
 
   BubbleRating({this.count, this.rating});
 
   BubbleRating.fromJson(Map<String, dynamic> json) {
     count = json["count"];
-    rating = json["rating"];
+    // Handle both int and double for rating
+    var ratingValue = json["rating"];
+    if (ratingValue is int) {
+      rating = ratingValue.toDouble();
+    } else if (ratingValue is double) {
+      rating = ratingValue;
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -176,12 +216,12 @@ class Badge {
   Badge();
 
   Badge.fromJson(Map<String, dynamic> json) {
-
+    // Add fields if required
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> _data = <String, dynamic>{};
-
+    // Add fields if required
     return _data;
   }
 }
